@@ -1,6 +1,7 @@
 from datetime import datetime
 from typing import Tuple
 
+
 def get_year_and_month(from_ms: int) -> Tuple[int, int]:
     """
     Get the year and month from a given Unix milliseconds timestamp.

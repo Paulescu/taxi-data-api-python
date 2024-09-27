@@ -17,6 +17,20 @@ fire = "^0.6.0"
 pyarrow = "^17.0.0"
 
 
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.6.8"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 88
+
+[tool.ruff.format]
+quote-style = "single"
+indent-style = "space"
+docstring-code-format = true
+
+[tool.ruff.lint]
+extend-select = ["I"]

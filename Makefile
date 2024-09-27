@@ -1,16 +1,22 @@
 run-dev:
-	poetry run uvicorn src.main:app --reload --port 8085
+	poetry run uvicorn src.api:app --reload --port ${PORT}
 
 build:
 	docker build -t taxi-data-api-python .
 
 run:
-	docker run -p 8085:8000 taxi-data-api-python
+	docker run -p ${PORT}:8000 taxi-data-api-python
 
-all: build run
+lint:
+	poetry run ruff check --fix .
 
-request-1:
-	curl -X GET "http://localhost:8085/trips?from_ms=1674561748000&n_results=100"
+format:
+	poetry run ruff format .
 
-# request-2:
-# 	curl -X GET "http://localhost:8081/trip?from_ms=1704070676000"
+all: lint format build run
+
+sample-request:
+	curl -X GET "http://localhost:${PORT}/trips?from_ms=1674561748000&n_results=100"
+
+sample-request-no-results:
+	curl -X GET "http://localhost:${PORT}/trips?from_ms=1727430298000&n_results=100"
