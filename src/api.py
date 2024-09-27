@@ -1,7 +1,8 @@
+from typing import Optional
+
 from fastapi import FastAPI, Query
 from loguru import logger
 from pydantic import BaseModel
-from typing import Optional
 
 from src.backend import Trip, get_trips
 
@@ -35,6 +36,9 @@ async def get_trip(
             message=f'Success. Returned {len(trips)} trips.',
         )
     else:
-        return TripsResponse(
-            message="No trips found for the given time range."
-        )
+        return TripsResponse(message='No trips found for the given time range.')
+
+
+@app.get('/health')
+async def health_check():
+    return {'status': 'healthy'}

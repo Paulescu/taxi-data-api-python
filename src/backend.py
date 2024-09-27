@@ -83,7 +83,6 @@ def download_parquet_file(year: int, month: int):
         logger.info(f'Downloaded file: yellow_tripdata_{year}-{month:02d}.parquet')
     else:
         logger.info(f'Failed to download file: {response.status_code}')
-        
 
 
 def read_parquet_file(year: int, month: int) -> Optional[pd.DataFrame]:
