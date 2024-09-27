@@ -67,14 +67,17 @@ def get_trips(from_ms: int, n_results: int) -> list[Trip]:
 
 def download_parquet_file(year: int, month: int):
     """
-    Download the parquet file for the given year and month.
+    Download the parquet file for the given year and month from the NYC Taxi and Limousine Commission.
+
+    https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page
+
+    Args:
+        year: The year to download the file for.
+        month: The month to download the file for.
     """
+    # URL to download the file from
     url = f'https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_{year}-{month:02d}.parquet'
 
-    """
-    https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2023-01.parquet
-    https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2023-02.parquet
-    """
     # Download the file
     response = requests.get(url)
     if response.status_code == 200:

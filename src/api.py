@@ -16,7 +16,7 @@ class TripsResponse(BaseModel):
 
 
 @app.get('/trips', response_model=TripsResponse)
-async def get_trip(
+def get_trip(
     from_ms: int = Query(..., description='Unix milliseconds'),
     n_results: int = Query(100, description='Number of results to output'),
 ):
@@ -40,5 +40,5 @@ async def get_trip(
 
 
 @app.get('/health')
-async def health_check():
+def health_check():
     return {'status': 'healthy'}
