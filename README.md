@@ -9,7 +9,7 @@
 
 ## Our goal 🎯
 
-Let’s build a REST API that can serve data on historical taxi rides in NYC. The original data is stored in one-month parquet files on this website, and our goal is to make it easily accessible through a REST API.
+Let’s build a REST API that can serve data on historical taxi rides in NYC. The original data is stored in one-month parquet files [on this website](https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page), and our goal is to make it easily accessible through a REST API.
 
 
 ## How to run this thing locally
