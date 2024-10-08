@@ -44,7 +44,7 @@ jobs:
         platforms: linux/amd64
         push: true
         tags: |
-          ghcr.io/Paulescu/taxi-data-api-python:${{ github.sha }}
+          ghcr.io/paulescu/taxi-data-api-python:${{ github.sha }}
 #   deploy-preview:
 #     name: 🧪 Deploy / Preview
 #     runs-on: ubuntu-latest
