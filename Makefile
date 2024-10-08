@@ -27,13 +27,16 @@ build: build-multi-stage
 run:
 	docker run -p $${PORT:-8090}:8000 taxi-data-api-python:multi-stage-build
 
+test:
+	poetry run pytest tests/
+
 lint:
 	poetry run ruff check --fix .
 
 format:
 	poetry run ruff format .
 
-all: lint format build run
+all: lint format test build run
 
 health-check:
 	curl -X GET "http://localhost:$${PORT:-8090}/health"

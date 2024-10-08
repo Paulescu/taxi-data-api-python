@@ -19,6 +19,7 @@ pyarrow = "^17.0.0"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.6.8"
+pytest = "^8.3.3"
 
 [build-system]
 requires = ["poetry-core"]

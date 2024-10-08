@@ -1,0 +1,92 @@
+name: CI/CD
+on:
+  push:
+    branches:
+      - '*'
+  workflow_dispatch:
+jobs:
+  cancel-previous-runs:
+    name: 🧹 Cancel previous runs
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🛑 Cancel Previous Runs
+      uses: styfle/cancel-workflow-action@0.10.1
+      with:
+        access_token: ${{ secrets.GITHUB_TOKEN }}
+    - name: ⬇️ Check out
+      uses: actions/checkout@v3.1.0
+      with:
+        fetch-depth: 1
+    - run: echo "Building"
+  
+  
+  tests:
+    name: 🧪 Run tests
+    runs-on: ubuntu-latest
+    needs:
+      - "cancel-previous-runs"
+    steps:
+      - name: ⬇️ Check out
+        uses: actions/checkout@v3.1.0
+        with:
+          fetch-depth: 1
+      - name: 🐍 Set up Python 3.10
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: 📦 Install Poetry
+        uses: snok/install-poetry@v1
+      - name: 📦 Install dependencies
+        run: poetry install
+      - name: 🧪 Run tests
+        run: poetry run pytest tests/
+
+  docker-build:
+    name: 📦 Docker build
+    runs-on: ubuntu-latest
+    needs:
+    - "tests"
+    steps:
+    - name: ⬇️ Check out
+      uses: actions/checkout@v3.1.0
+      with:
+        fetch-depth: 1
+    - name: 🐋 Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+    - name: Login to GitHub Container Registry
+      uses: docker/login-action@v1
+      with:
+        registry: ghcr.io
+        username: ${{ github.repository_owner }}
+        password: ${{ secrets.PAT }} # `PAT` is a secret that contains your Personal Access Token with `write:packages` scope
+    - name: 🐋 Build and push docker image
+      uses: docker/build-push-action@v3.1.1
+      with:
+        context: .
+        file: Dockerfile.2stage
+        platforms: linux/amd64
+        push: true
+        tags: |
+          ghcr.io/paulescu/taxi-data-api-python:${{ github.sha }}
+
+  deploy:
+    name: 🧑‍🚀 Deploy
+    runs-on: ubuntu-latest
+    needs:
+    - "docker-build"
+    if: github.ref == 'refs/heads/main'
+    environment: production
+    steps:
+    - name: ⬇️ Check out
+      uses: actions/checkout@v3.1.0
+      with:
+        fetch-depth: 1
+    - name: 🚀 Deploy / Production
+      uses: gimlet-io/gimlet-artifact-shipper-action@v0.9.0
+      with:
+        DEPLOY: "true"
+        ENV: "electric-paper"
+        APP: "taxi-data-api-python"
+      env:
+        GIMLET_SERVER: ${{ secrets.GIMLET_SERVER }}
+        GIMLET_TOKEN: ${{ secrets.GIMLET_TOKEN }}
