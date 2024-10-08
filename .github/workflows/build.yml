@@ -5,7 +5,7 @@ on:
       - '*'
   workflow_dispatch:
 jobs:
-  build:
+  cancel-previous-runs:
     name: 👷 Build
     runs-on: ubuntu-latest
     steps:
@@ -18,11 +18,12 @@ jobs:
       with:
         fetch-depth: 1
     - run: echo "Building"
+  
   docker-build:
     name: 📦 Docker build
     runs-on: ubuntu-latest
     needs:
-    - "build"
+    - "cancel-previous-runs"
     steps:
     - name: ⬇️ Check out
       uses: actions/checkout@v3.1.0
@@ -45,49 +46,8 @@ jobs:
         push: true
         tags: |
           ghcr.io/paulescu/taxi-data-api-python:${{ github.sha }}
-#   deploy-preview:
-#     name: 🧪 Deploy / Preview
-#     runs-on: ubuntu-latest
-#     needs:
-#     - "docker-build"
-#     if: github.ref != 'refs/heads/main'
-#     environment: preview
-#     steps:
-#     - name: ⬇️ Check out
-#       uses: actions/checkout@v3.1.0
-#       with:
-#         fetch-depth: 1
-#     - name: 🧪 Deploy / Preview
-#       uses: gimlet-io/gimlet-artifact-shipper-action@v0.9.0
-#       with:
-#         DEPLOY: "true"
-#         ENV: "preview"
-#         APP: "gais"
-#       env:
-#         GIMLET_SERVER: ${{ secrets.GIMLET_SERVER }}
-#         GIMLET_TOKEN: ${{ secrets.GIMLET_TOKEN }}
-#   deploy-staging:
-#     name: 🚀 Deploy / Staging
-#     runs-on: ubuntu-latest
-#     needs:
-#     - "docker-build"
-#     if: github.ref == 'refs/heads/main'
-#     environment: staging
-#     steps:
-#     - name: ⬇️ Check out
-#       uses: actions/checkout@v3.1.0
-#       with:
-#         fetch-depth: 1
-#     - name: 🚀 Deploy / Staging
-#       uses: gimlet-io/gimlet-artifact-shipper-action@v0.9.0
-#       with:
-#         DEPLOY: "true"
-#         ENV: "staging"
-#         APP: "gais"
-#       env:
-#         GIMLET_SERVER: ${{ secrets.GIMLET_SERVER }}
-#         GIMLET_TOKEN: ${{ secrets.GIMLET_TOKEN }}
-  deploy-production:
+
+  deploy:
     name: 🧑‍🚀 Deploy / Production
     runs-on: ubuntu-latest
     needs:
@@ -103,8 +63,8 @@ jobs:
       uses: gimlet-io/gimlet-artifact-shipper-action@v0.9.0
       with:
         DEPLOY: "true"
-        ENV: "production"
-        APP: "gais"
+        ENV: "electric-paper"
+        APP: "taxi-data-api-python"
       env:
         GIMLET_SERVER: ${{ secrets.GIMLET_SERVER }}
         GIMLET_TOKEN: ${{ secrets.GIMLET_TOKEN }}
