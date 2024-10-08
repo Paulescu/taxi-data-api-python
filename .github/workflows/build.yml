@@ -40,11 +40,11 @@ jobs:
       uses: docker/build-push-action@v3.1.1
       with:
         context: .
-        file: Dockerfile
+        file: Dockerfile.2stage
         platforms: linux/amd64
         push: true
         tags: |
-          ghcr.io/gimlet-io/gais:${{ github.sha }}
+          ghcr.io/Paulescu/taxi-data-api-python:${{ github.sha }}
 #   deploy-preview:
 #     name: 🧪 Deploy / Preview
 #     runs-on: ubuntu-latest
