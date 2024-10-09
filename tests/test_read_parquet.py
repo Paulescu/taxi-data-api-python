@@ -1,6 +1,7 @@
-import pytest
 import pandas as pd
+
 from src.backend import read_parquet_file
+
 
 def test_read_parquet_file_returns_non_empty_dataframe():
     # Arrange
