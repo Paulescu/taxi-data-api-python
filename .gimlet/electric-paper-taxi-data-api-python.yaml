@@ -11,13 +11,11 @@ values:
   gitSha: '{{ .SHA }}'
   image:
     context: .
-    dockerfile: Dockerfile.2stage
-    registry: customRegistry
-    repository: registry.gimlet:30003/paulescuayolbhnl/{{ .APP }}
-    strategy: dockerfile
+    dockerfile: ""
+    registry: public
+    repository: https://github.com/users/paulescu/packages/container/package/taxi-data-api-python
+    strategy: dynamic
     tag: '{{ .SHA }}'
-  imagePullSecrets:
-    - '{{ .APP }}-customregistry-pullsecret'
   ingress:
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt
