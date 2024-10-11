@@ -1,5 +1,14 @@
+# feel free to change the PORT value if you have another service running on port 8092
+export PORT=8092
+
+install:
+	@echo "Downloading and installing Python Poetry"
+	curl -sSL https://install.python-poetry.org | python3 -
+	poetry env use $(shell which python3.10)
+	poetry install
+
 run-dev:
-	poetry run uvicorn src.api:app --reload --port $${PORT:-8090}
+	poetry run uvicorn src.api:app --reload --port $(PORT)
 
 build-naive:
 	@echo "Building naive image"
@@ -38,14 +47,33 @@ format:
 
 all: lint format test build run
 
-health-check:
-	curl -X GET "http://localhost:$${PORT:-8090}/health"
+# Commands to check the API works as expected when running locally
+health-check-local:
+	curl -X GET "http://localhost:$(PORT)/health"
 
-sample-request:
-	curl -X GET "http://localhost:$${PORT:-8090}/trips?from_ms=1674561748000&n_results=100"
+sample-request-local:
+	curl -X GET "http://localhost:$(PORT)/trips?from_ms=1674561748000&n_results=100"
 
-sample-request-no-results:
-	curl -X GET "http://localhost:$${PORT:-8090}/trips?from_ms=1727430298000&n_results=100"
+sample-request-no-results-local:
+	curl -X GET "http://localhost:$(PORT)/trips?from_ms=1727430298000&n_results=100"
 
-check-image-sizes:
-	docker images --format "{{.Size}}" taxi-data-api-python:single-stage-build
+# Commands to check the API from the production environment works as expected
+health-check-production:
+	curl -X GET "https://paulescu-taxi-data-api-python-ayolbhnl.gimlet.app/health"
+
+sample-request-production:
+	curl -X GET "https://paulescu-taxi-data-api-python-ayolbhnl.gimlet.app/trips?from_ms=1674561748000&n_results=100"
+
+sample-request-no-results-production:
+	curl -X GET "https://paulescu-taxi-data-api-python-ayolbhnl.gimlet.app/trips?from_ms=1727430298000&n_results=100"
+
+# Command to check the size of the local Docker images
+check-image-sizes: build-naive build-single-stage build-multi-stage
+	@echo "Naive image size"
+	@docker images --format "{{.Size}}" taxi-data-api-python:naive-build
+
+	@echo "Single-stage image size"
+	@docker images --format "{{.Size}}" taxi-data-api-python:single-stage-build
+
+	@echo "Multi-stage image size"
+	@docker images --format "{{.Size}}" taxi-data-api-python:multi-stage-build
