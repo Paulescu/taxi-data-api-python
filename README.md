@@ -65,7 +65,7 @@ Let me show you how to deploy this API to a production Kubernetes cluster.
 
 or
 
-- You can use the gimlet manifest in this repository, to implement a continuous delivery strategy with this workflow that uses the Gimlet Github action.
+- You can adjust the [gimlet manifest in this repository](https://github.com/Paulescu/taxi-data-api-python/blob/main/.gimlet/electric-paper-taxi-data-api-python.yaml), to automatically deploy your code changes to the main branch.
 
 ## Wanna see my API in action?
 [👉🏽 Click here to ping my API](https://paulescu-taxi-data-api-python-ayolbhnl.gimlet.app/trips?from_ms=1674561817000&n_results=100)
