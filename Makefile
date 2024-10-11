@@ -1,5 +1,5 @@
 # feel free to change the PORT value if you have another service running on port 8092
-export PORT=8092
+export PORT=8095
 
 install:
 	@echo "Downloading and installing Python Poetry"
@@ -34,7 +34,7 @@ build-multi-stage:
 build: build-multi-stage
 
 run:
-	docker run -p $${PORT:-8090}:8000 taxi-data-api-python:multi-stage-build
+	docker run -p $(PORT):8000 taxi-data-api-python:multi-stage-build
 
 test:
 	poetry run pytest tests/
