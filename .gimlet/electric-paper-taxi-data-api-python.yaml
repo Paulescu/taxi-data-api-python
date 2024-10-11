@@ -13,7 +13,7 @@ values:
     context: .
     dockerfile: ""
     registry: public
-    repository: https://github.com/Paulescu/taxi-data-api-python
+    repository: ghcr.io/paulescu/taxi-data-api-python
     strategy: dynamic
     tag: '{{ .SHA }}'
   ingress:
