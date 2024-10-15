@@ -1,5 +1,5 @@
 <div align="center">
-    <h2> </h2>
+    <h1></h1>
     <h1>Build and deploy a professional REST API to Kubernetes with <a href="https://gimlet.io">Gimlet</a> 🚀</h1>
     <img src="./media/kubernetes_cluster.gif" width='600' />
 </div>
