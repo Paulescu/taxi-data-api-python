@@ -62,6 +62,10 @@ def get_trips(from_ms: int, n_results: int) -> list[Trip]:
     trips = df.to_dict(orient='records')
     trips = [Trip(**trip) for trip in trips]
 
+    # Uncomment to test the API with a delay
+    # from time import sleep
+    # sleep(0.3)
+
     return trips
 
 
