@@ -4,11 +4,14 @@
     <img src="./media/kubernetes_cluster.gif" width='600' />
 </div>
 
+
 #### Table of contents
-* [Our goal](#our-goal)
-* [How to run the API locally?](#how-to-run-the-api-locally)
-* [How to deploy the API to Kubernetes with Gimlet?](#how-to-deploy-the-api-to-kubernetes-with-gimlet)
-* [Wanna learn more real-world ML?](#wanna-learn-more-real-world-ml)
+* [Our goal 🎯](#our-goal)
+* [How to run the API locally? 🏃](#how-to-run-the-api-locally)
+* [How to deploy the API to Kubernetes with Gimlet? 🚀](#how-to-deploy-the-api-to-kubernetes-with-gimlet)
+* [How to monitor our API with Elasticsearch and Kibana? 🔎](#how-to-monitor-our-api-with-elasticsearch-and-kibana)
+* [See it in action 🎬](#see-it-in-action)
+* [Wanna learn more real-world ML? 🧠](#wanna-learn-more-real-world-ml)
 
 ## Our goal
 
@@ -69,8 +72,19 @@ or
 
 - You can adjust the [gimlet manifest in this repository](https://github.com/Paulescu/taxi-data-api-python/blob/main/.gimlet/electric-paper-taxi-data-api-python.yaml), to automatically deploy your code changes to the main branch.
 
-## Wanna see my API in action?
-[👉🏽 Click here to ping my API](https://paulescu-taxi-data-api-python-ayolbhnl.gimlet.app/trips?from_ms=1674561817000&n_results=100)
+## How to monitor our API with Elasticsearch and Kibana?
+
+These are the steps:
+
+1. Spin up Elasticsearch and Kibana with the docker compose
+2. Add middleware to FastAPI app
+3. Build a dashboard with Kibana
+
+<img src="./media/kibana.gif" width='600' />
+
+## See it in action
+
+[👉🏽 Click here to try the API](https://paulescu-taxi-data-api-python-ayolbhnl.gimlet.app/trips?from_ms=1674561817000&n_results=100)
 
 
 ## Wanna learn more real-world ML?

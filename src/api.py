@@ -5,8 +5,11 @@ from loguru import logger
 from pydantic import BaseModel
 
 from src.backend import Trip, get_trips
+from src.middleware import TimingMiddleware
 
 app = FastAPI()
+
+app.add_middleware(TimingMiddleware)
 
 
 class TripsResponse(BaseModel):

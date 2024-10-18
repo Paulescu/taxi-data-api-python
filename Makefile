@@ -33,8 +33,13 @@ build-multi-stage:
 
 build: build-multi-stage
 
-run:
-	docker run -p $(PORT):8000 taxi-data-api-python:multi-stage-build
+run: build
+	docker run \
+		-e ELASTICSEARCH_HOST=http://elasticsearch:9200 \
+		-e ELASTICSEARCH_INDEX=taxi_data_api \
+		--network elasticsearch \
+		-p $(PORT):8000 \
+		taxi-data-api-python:multi-stage-build
 
 test:
 	poetry run pytest tests/
@@ -57,6 +62,14 @@ sample-request-local:
 sample-request-no-results-local:
 	curl -X GET "http://localhost:$(PORT)/trips?from_ms=1727430298000&n_results=100"
 
+many-requests-local:
+	@N=$${N:-10}; \
+	for i in $$(seq 1 $$N); do \
+		echo "Request $$i:"; \
+		$(MAKE) sample-request-local; \
+		echo; \
+	done
+
 # Commands to check the API from the production environment works as expected
 health-check-production:
 	curl -X GET "https://paulescu-taxi-data-api-python-ayolbhnl.gimlet.app/health"
@@ -77,3 +90,10 @@ check-image-sizes: build-naive build-single-stage build-multi-stage
 
 	@echo "Multi-stage image size"
 	@docker images --format "{{.Size}}" taxi-data-api-python:multi-stage-build
+
+# Commands to start and stop the Elasticsearch and Kibana containers
+start-infra:
+	docker compose up -d
+
+stop-infra:
+	docker compose down
