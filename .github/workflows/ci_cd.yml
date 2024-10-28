@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - '*'
+    paths-ignore:
+      - 'README.md'
 jobs:
   cancel-previous-runs:
     name: 🧹 Cancel previous runs
