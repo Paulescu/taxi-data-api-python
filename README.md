@@ -1,7 +1,14 @@
 <div align="center">
     <h2>Real-World ML</h2>
     <h1>Build and deploy a professional REST API to Kubernetes with <a href="https://gimlet.io">Gimlet</a> 🚀</h1>
-    <img src="./media/kubernetes_cluster.gif" width='600' />
+    <!-- <img src="./media/kubernetes_cluster.gif" width='600' /> -->
+</div>
+
+<div align="center">
+  <a href="https://www.youtube.com/watch?v=3rDMQLE0DKA">
+    <img src="media/yt_cover.png" alt="Deploy to Kubernetes with Gimlet" style="width:100%;">
+    <p>Click here to watch the video 🎬</p>
+  </a>
 </div>
 
 
