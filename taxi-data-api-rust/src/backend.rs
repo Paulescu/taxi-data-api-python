@@ -3,8 +3,9 @@ use serde::Serialize;
 use log::{info, error};
 use anyhow::Result;
 use polars::prelude::*;
+use rand::Rng;
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, Clone)]
 pub struct Trip {
     tpep_pickup_datetime: DateTime<Utc>,
     tpep_dropoff_datetime: DateTime<Utc>,
@@ -12,15 +13,25 @@ pub struct Trip {
     fare_amount: f64,
 }
 
-#[allow(dead_code)]
-fn get_fake_trips() -> Vec<Trip> {
-    let one_trip = Trip {
-        tpep_pickup_datetime: Utc::now(),
-        tpep_dropoff_datetime: Utc::now(),
-        trip_distance: 0.0,
-        fare_amount: 0.0,
-    };
-    vec![one_trip]
+pub async fn get_fake_trips(from_ms: i64, n_results: i64) -> Result<Vec<Trip>> {
+    // Create a random number generator
+    let mut rng = rand::thread_rng();
+    
+    // Create n_results fake trips
+    let trips = (0..n_results).map(|_| {
+        let random_seconds = rng.gen_range(0..60);
+        let pickup_time = DateTime::<Utc>::from_timestamp(from_ms / 1000 + random_seconds, 0).unwrap();
+        let dropoff_time = DateTime::<Utc>::from_timestamp(from_ms / 1000 + random_seconds + rng.gen_range(300..3600), 0).unwrap();
+        
+        Trip {
+            tpep_pickup_datetime: pickup_time,
+            tpep_dropoff_datetime: dropoff_time,
+            trip_distance: rng.gen_range(0.5..20.0),
+            fare_amount: rng.gen_range(2.5..100.0),
+        }
+    }).collect();
+
+    Ok(trips)
 }
 
 /// Reads taxi trip data from a parquet file and returns a vector of Trip structs

@@ -5,7 +5,7 @@ use serde::Deserialize;
 use env_logger::Env;
 
 mod backend;
-use crate::backend::get_trips;
+use crate::backend::{get_trips, get_fake_trips};
 
 async fn health() -> HttpResponse {
     HttpResponse::Ok().json(serde_json::json!({
@@ -21,7 +21,7 @@ struct TripsQuery {
 }
 
 async fn trips(query: web::Query<TripsQuery>) -> HttpResponse {
-    match get_trips(query.from_ms, query.n_results).await {
+    match get_fake_trips(query.from_ms, query.n_results).await {
         Ok(trips) => HttpResponse::Ok().json(trips),
         Err(e) => HttpResponse::InternalServerError().body(e.to_string())
     }
